@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Invoice</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+
+    .invoice-box {
+      max-width: 600px;
+      margin: auto;
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border: 2px solid #007bff;
+    }
+
+    h2 {
+      color: #007bff;
+      text-align: center;
+      border-bottom: 2px solid #007bff;
+      padding-bottom: 10px;
+    }
+
+    p {
+      color: #333;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    table th {
+      background: #007bff;
+      color: #fff;
+      padding: 10px;
+      text-align: left;
+    }
+
+    table,
+    th,
+    td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: left;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    .total {
+      font-weight: bold;
+      font-size: 18px;
+      color: #28a745;
+      text-align: right;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="invoice-box">
+    <h2>Invoice</h2>
+    <p>Hi <%= userName %>,</p>
+    <p>Thank you for your purchase! Here is your invoice:</p>
+
+    <% if (order.items.length> 0) { %>
+      <table>
+        <tr>
+          <th>Product</th>
+          <th>Quantity</th>
+          <th>Price</th>
+        </tr>
+        <% order.items.forEach(item=> { %>
+          <tr>
+            <td><%= item.name %></td>
+            <td><%= item.quantity %></td>
+            <td>₹<%= (item.price * item.quantity).toFixed(2) %></td>
+          </tr>
+        <% }) %>
+      </table>
+    <% } else { %>
+      <p>No items found in your order.</p>
+    <% } %>
+
+    <p><strong>Shipping Fee:</strong> ₹60.00</p>
+    <p class="total">Total Amount: ₹<%= (order.totalAmount + 60).toFixed(2) %></p>
+  </div>
+</body>
+
+</html>
