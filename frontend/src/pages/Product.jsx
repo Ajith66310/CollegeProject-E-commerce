@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 import { ShopContext } from '../context/ShopContext';
 import { assets } from '../assets/assets';
 import RelatedProducts from '../components/RelatedProducts';
+import { toast } from 'react-toastify';
 
 const Product = () => {
   const { productId } = useParams();
@@ -28,9 +29,9 @@ const Product = () => {
 
   const handleSubmitReview = async () => {
     if (!productData || !productData._id) {
-      return alert("Product data not loaded yet");
+      return toast("Product data not loaded yet");
     }
-    if (!reviewText.trim()) return alert("Review cannot be empty");
+    if (!reviewText.trim()) return toast("Review cannot be empty");
 
     try {
       const res = await fetch(`http://localhost:4000/api/product/${productData._id}/review/add`, {
@@ -46,15 +47,15 @@ const Product = () => {
 
       const data = await res.json();
       if (res.ok) {
-        setReviewText("");
+        setReviewText(" ");
         // Refetch product data to get updated reviews
         fetchProductData();
       } else {
-        alert(data.message || "Failed to submit review");
+        toast(data.message || "Failed to submit review");
       }
     } catch (error) {
       console.error(error);
-      alert("Error submitting review");
+      toast("Error submitting review");
     }
   };
 

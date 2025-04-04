@@ -8,6 +8,7 @@ import {
   verifyRazorpay,
   cancelOrder,
   returnOrder,
+  validateZipcode,
 } from "../controllers/orderController.js";
 // import adminAuth from "../middleware/adminAuth.js";
 import authUser from "../middleware/auth.js";
@@ -27,6 +28,10 @@ orderRouter.post("/userorders", authUser, userOrders);
 
 // verify payment
 orderRouter.post("/verifyRazorpay", authUser, verifyRazorpay);
+
 orderRouter.post("/cancel", cancelOrder);
+
 orderRouter.post("/return", returnOrder);
+
+orderRouter.post("/validate-zipcode", validateZipcode);
 export default orderRouter;

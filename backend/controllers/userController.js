@@ -32,7 +32,32 @@ const loginUser = async (req, res) => {
 // routes for user register
 const registerUser = async (req, res) => {
   try {
-    const {name, email, password} = req.body;
+    const {name, password} = req.body;
+    let {email} =req.body;
+
+
+     // Check if the email contains uppercase letters
+     const uppercaseRegex = /[A-Z]/;
+     if (uppercaseRegex.test(email)) {
+       return res.json({
+         success: false,
+         message: "Email must not contain uppercase letters",
+       });
+     }
+
+     // Convert email to lowercase
+     email = email.toLowerCase();
+
+     // Regular expression to validate email format (must end with @gmail.com)
+     const emailRegex = /^[a-z0-9._%+-]+@gmail\.com$/;
+ 
+     // Check if the email matches the required format
+     if (!emailRegex.test(email)) {
+       return res.json({
+         success: false,
+         message: "Email must end with @gmail.com",
+       });
+     }
 
     // checking user already exist /not
     const exists = await userModel.findOne({email});
@@ -81,4 +106,38 @@ const adminLogin = async (req, res) => {
     res.json({success: false, message: error.message});
   }
 };
-export {loginUser, registerUser, adminLogin};
+
+const forgotPassword = async (req, res) => {
+  try {
+    const { email, newPassword } = req.body;
+
+    // Check if the user exists
+    const user = await userModel.findOne({ email });
+    if (!user) {
+      return res.json({ success: false, message: "User doesn't exist" });
+    }
+
+    // Validate the new password
+    if (newPassword.length < 8) {
+      return res.json({
+        success: false,
+        message: "Password must have at least 8 characters",
+      });
+    }
+
+    // Hash the new password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+    // Update the user's password
+    user.password = hashedPassword;
+    await user.save();
+
+    res.json({ success: true, message: "Password updated successfully" });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
+
+export {loginUser, registerUser, adminLogin,forgotPassword};

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Title from '../components/Title'
 import CartTotal from '../components/CartTotal'
 import { assets } from '../assets/assets'
@@ -21,11 +21,21 @@ const PlaceOrder = () => {
     country: '',
     phone: ''
   })
+
+  const [isDeliverable, setIsDeliverable] = useState(null); // null = not checked, true = deliverable, false = not deliverable
+
   const onChangeHandler = (event) => {
-    const name = event.target.name
-    const value = event.target.value
-    setFormData(data => ({ ...data, [name]: value }))
-  }
+    const name = event.target.name;
+    let value = event.target.value;
+
+    // Allow only numeric input for the zipcode field
+    if (name === "zipcode") {
+      value = value.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+    }
+    setFormData((data) => ({ ...data, [name]: value }));
+  };
+
+
   const initPay = (order) => {
     const options = {
       key: VITE_RAZORPAY_KEY_ID,
@@ -126,6 +136,32 @@ const PlaceOrder = () => {
     }
   };
 
+  const validateZipcode = async () => {
+    try {
+
+      const response = await axios.post("http://localhost:4000/api/order/validate-zipcode", {
+        zipcode: formData.zipcode,
+      });
+
+      if (response.data.success) {
+        setIsDeliverable(true);
+      } else {
+        setIsDeliverable(false);
+      }
+    } catch (error) {
+      console.error("Error validating zipcode:", error);
+      toast.error("Error validating zipcode");
+      setIsDeliverable(false);
+    }
+  };
+
+  // Trigger `validateZipcode` when `formData.zipcode` changes and has 6 digits
+  useEffect(() => {
+    if (formData.zipcode.length === 6) {
+      validateZipcode();
+    }
+  }, [formData.zipcode]);
+
   const handleUnauthorizedUser = () => {
     toast.error("Your account has been removed. Please sign up again.", {
       autoClose: 3000
@@ -157,7 +193,21 @@ const PlaceOrder = () => {
           <input required onChange={onChangeHandler} name='state' value={formData.state} className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type="text" placeholder='State' />
         </div>
         <div className='flex gap-3'>
-          <input required onChange={onChangeHandler} name='zipcode' value={formData.zipcode} className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type="number" placeholder='Zipcode' />
+          <input
+            required
+            onChange={onChangeHandler}
+            name="zipcode"
+            value={formData.zipcode}
+            className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
+            type="text"
+            placeholder="Zipcode"
+          />
+          {isDeliverable === false && (
+            <p className="text-red-500 text-sm mt-1">Not Deliverable. Please change the zipcode.</p>
+          )}
+          {isDeliverable === true && (
+            <p className="text-green-500 text-sm mt-1">Deliverable</p>
+          )}
           <input required onChange={onChangeHandler} name='country' value={formData.country} className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type="text" placeholder='Country' />
         </div>
         <input required onChange={onChangeHandler} name='phone' value={formData.phone} className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type="number" placeholder='Phone' />
@@ -185,7 +235,14 @@ const PlaceOrder = () => {
             </div>
           </div>
           <div className='w-full text-end mt-8'>
-            <button type='submit' className='bg-black text-white px-16 py-3 text-sm '>PLACE ORDER</button>
+            <button
+              type="submit"
+              className={`bg-black text-white px-16 py-3 text-sm ${isDeliverable === false ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+              disabled={isDeliverable === false}
+            >
+              PLACE ORDER
+            </button>
           </div>
         </div>
       </div>
