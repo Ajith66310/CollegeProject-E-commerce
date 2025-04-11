@@ -60,7 +60,7 @@ const Home = () => {
 
   useEffect(() => {
     applyFilter();
-  }, [category, search, showSearch,products]);
+  }, [category, search, showSearch, products]);
 
   useEffect(() => {
     sortProduct();
@@ -70,28 +70,152 @@ const Home = () => {
     <div className="flex flex-col sm:flex-row gap-1 sm:gap-10 pt-10 border-t">
       {/* Filter options */}
       <div className="min-w-60">
-        <p onClick={() => setShowFilter(!showFilter)} className="my-2 text-xl flex items-center cursor-pointer gap-2">FILTERS
-          <img className={`h-3 sm:hidden ${showFilter ? "rotate-90" : ""}`} src={assets.dropdown_icon} alt="" /></p>
+        <p
+          onClick={() => setShowFilter(!showFilter)}
+          className="my-2 text-xl flex items-center cursor-pointer gap-2"
+        >
+          FILTERS
+          <img
+            className={`h-3 sm:hidden ${showFilter ? "rotate-90" : ""}`}
+            src={assets.dropdown_icon}
+            alt=""
+          />
+        </p>
         {/* Category filter */}
-        <div className={`border border-gray-300 pl-5 py-3 mt-6 ${showFilter ? "" : "hidden"} sm:block`}>
+        <div
+          className={`border border-gray-300 pl-5 py-3 mt-6 ${showFilter ? "" : "hidden"
+            } sm:block lg:hidden`}
+        >
           <p className="mb-3 text-sm font-medium">CATEGORIES</p>
           <div className="flex flex-col gap-2 text-sm font-light text-gray-700">
             <p className="flex gap-2">
-              <input className="w-3" type="checkbox" value={"Vegetables"} onChange={toggleCategory} />Vegetables</p>
+              <input
+                className="w-3"
+                type="checkbox"
+                value={"Vegetables"}
+                onChange={toggleCategory}
+              />
+              Vegetables
+            </p>
             <p className="flex gap-2">
-              <input className="w-3" type="checkbox" value={"Fruits"} onChange={toggleCategory} />Fruits</p>
+              <input
+                className="w-3"
+                type="checkbox"
+                value={"Fruits"}
+                onChange={toggleCategory}
+              />
+              Fruits
+            </p>
             <p className="flex gap-2">
-              <input className="w-3" type="checkbox" value={"Spices"} onChange={toggleCategory} />Spices</p>
-                <p className="flex gap-2">
-              <input className="w-3" type="checkbox" value={"Snacks"} onChange={toggleCategory} />Snacks</p>
+              <input
+                className="w-3"
+                type="checkbox"
+                value={"Spices"}
+                onChange={toggleCategory}
+              />
+              Spices
+            </p>
             <p className="flex gap-2">
-              <input className="w-3" type="checkbox" value={"Icecream"} onChange={toggleCategory} />Icecream</p>
+              <input
+                className="w-3"
+                type="checkbox"
+                value={"Snacks"}
+                onChange={toggleCategory}
+              />
+              Snacks
+            </p>
             <p className="flex gap-2">
-              <input className="w-3" type="checkbox" value={"Drinks"} onChange={toggleCategory} />drinks</p>          
+              <input
+                className="w-3"
+                type="checkbox"
+                value={"Icecream"}
+                onChange={toggleCategory}
+              />
+              Icecream
+            </p>
+            <p className="flex gap-2">
+              <input
+                className="w-3"
+                type="checkbox"
+                value={"Drinks"}
+                onChange={toggleCategory}
+              />
+              Drinks
+            </p>
           </div>
         </div>
-      </div>
 
+        {/* Dropdown for large screens */}
+        <div className="hidden lg:block relative">
+          <button
+            onClick={() => setShowFilter(!showFilter)}
+            className="border border-gray-300 px-4 py-2 text-sm font-medium"
+          >
+            Select Categories
+          </button>
+          {showFilter && (
+            <div className="absolute bg-white border border-gray-300 mt-2 w-48 z-10">
+              <div className="flex flex-col gap-2 text-sm font-light text-gray-700 p-3">
+                <p className="flex gap-2">
+                  <input
+                    className="w-3"
+                    type="checkbox"
+                    value={"Vegetables"}
+                    onChange={toggleCategory}
+                  />
+                  Vegetables
+                </p>
+                <p className="flex gap-2">
+                  <input
+                    className="w-3"
+                    type="checkbox"
+                    value={"Fruits"}
+                    onChange={toggleCategory}
+                  />
+                  Fruits
+                </p>
+                <p className="flex gap-2">
+                  <input
+                    className="w-3"
+                    type="checkbox"
+                    value={"Spices"}
+                    onChange={toggleCategory}
+                  />
+                  Spices
+                </p>
+                <p className="flex gap-2">
+                  <input
+                    className="w-3"
+                    type="checkbox"
+                    value={"Snacks"}
+                    onChange={toggleCategory}
+                  />
+                  Snacks
+                </p>
+                <p className="flex gap-2">
+                  <input
+                    className="w-3"
+                    type="checkbox"
+                    value={"Icecream"}
+                    onChange={toggleCategory}
+                  />
+                  Icecream
+                </p>
+                <p className="flex gap-2">
+                  <input
+                    className="w-3"
+                    type="checkbox"
+                    value={"Drinks"}
+                    onChange={toggleCategory}
+                  />
+                  Drinks
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+      
       {/* Right Side */}
       <div className="flex-1 ">
         <div className="flex justify-between text-base sm:text-2xl mb-4">

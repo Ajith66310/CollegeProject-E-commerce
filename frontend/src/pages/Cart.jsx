@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 
 const Cart = () => {
 
-  const { products, currency, cartItems, updateQuantity, navigate } = useContext(ShopContext);
+  const { products, currency, cartItems, updateQuantity, navigate, setProducts } = useContext(ShopContext);
 
   const [cartData, setCartData] = useState([]);
 
@@ -39,7 +39,7 @@ const Cart = () => {
       setTimeout(() => {
         navigate("/login");
       }, 3000);
-      
+
       return false;
     }
     return true;
@@ -89,8 +89,27 @@ const Cart = () => {
                     </div>
                   </div>
                 </div>
-                <input onChange={(e) => e.target.value === '' || e.target.value === '0' ? null : updateQuantity(item._id, item.quantity, Number(e.target.value))} className='border max-w-10 sm:max-w-20 px-1 sm:px-2 py-1' type="number" min={1} defaultValue={item.productQuantity} id="" />
-                <img onClick={() => updateQuantity(item._id, item.quantity, 0)} className='w-4 mr-4 sm:w-5 cursor-pointer' src={assets.bin_icon} alt="" />
+                <p className='max-w-10 sm:max-w-20 px-1 sm:px-2 py-1'>{item.productQuantity}</p>
+                <img
+                  onClick={() => {
+                    const productData = products.find((product) => product._id === item._id);
+                    if (productData) {
+                      // Update stock in ShopContext
+                      const updatedProducts = products.map((product) =>
+                        product._id === item._id
+                          ? { ...product, stock: product.stock + item.productQuantity }
+                          : product
+                      );
+                      setProducts(updatedProducts); // Update products in ShopContext
+
+                      // Remove the product from the cart
+                      updateQuantity(item._id, item.quantity, 0);
+                    }
+                  }}
+                  className="w-4 mr-4 sm:w-5 cursor-pointer"
+                  src={assets.bin_icon}
+                  alt="Remove"
+                />
               </div>
             )
           })

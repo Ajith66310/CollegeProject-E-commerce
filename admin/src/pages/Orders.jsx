@@ -53,6 +53,11 @@ const Orders = () => {
           orders.map((order, index) => (
             <div className='grid grid-cols-1 sm:grid-cols-[0.5fr_2fr_1fr] lg:grid-cols-[0.5fr_2fr_1fr_1fr_1fr] gap-3 items-start border-2 border-gray-200  p-5 md:p-8 my-3 md:my-4 text-xs sm:text-sm text-gray-700' key={index}>
               <img className='w-12' src={assets.parcel_icon} alt="" />
+              {/* <img
+                className="w-12"
+                src={order.items[0]?.image[0] || assets.parcel_icon} //first product's image or parcel icon
+                alt={order.items[0]?.name || "Product Image"}
+              /> */}
               <div>
                 <div>
                   {order.items.map((item, index) => {
@@ -82,7 +87,10 @@ const Orders = () => {
               <select
                 onChange={(event) => statusHandler(event, order._id)}
                 value={order.status}
-                className="p-2 font-semibold"
+                className={`p-2 font-semibold rounded 
+                  ${order.status === 'Return Requested' ? 'text-blue-600 border-blue-600' : ''}
+                  ${order.status === 'Cancelled' ? 'text-red-600 border-red-600' : ''}
+                  border`}
                 disabled={order.status === 'Return Requested' || order.status === 'Cancelled'}
               >
                 {/* Prevent changing status for Cancelled or Returned Orders */}

@@ -17,7 +17,7 @@ const Add = ({ token }) => {
   const [bestseller, setBestseller] = useState(false);
   const [quantity, setQuantity] = useState([]);
   const [expiryDate, setExpiryDate] = useState("");
-
+  const [stock, setStock] = useState("");
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
@@ -30,7 +30,8 @@ const Add = ({ token }) => {
       formData.append("bestseller", bestseller)
       formData.append("quantity", JSON.stringify(quantity))
       formData.append("expiryDate", expiryDate)
-
+      formData.append("stock", stock);
+      
       image1 && formData.append("image1", image1)
       image2 && formData.append("image2", image2)
       image3 && formData.append("image3", image3)
@@ -138,6 +139,18 @@ const Add = ({ token }) => {
             <p className={`${quantity.includes("1pack") ? "bg-pink-200" : "bg-slate-200"} px-3 py-1 cursor-pointer`}>1pack</p>
           </div>
         </div>
+      </div>
+      {/* New Stock Input Field */}
+      <div>
+        <p className='mb-2'>Product Stock</p>
+        <input
+          onChange={(e) => setStock(e.target.value)}
+          value={stock}
+          className='w-full px-3 py-2 sm:w-[120px]'
+          type="number"
+          placeholder='Enter stock quantity'
+          required
+        />
       </div>
       <div className='w-full'>
         <p className='mb-2'>Product Expiry Date</p>

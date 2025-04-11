@@ -1,6 +1,7 @@
 import sendInvoiceEmail from "../utils/emailService.js";
 import orderModel from "../models/orderModel.js";
 import userModel from "../models/userModel.js";
+import productModel from "../models/productModel.js";
 import razorpay from "razorpay";
 import axios from 'axios'
 
@@ -18,6 +19,20 @@ const razorpayInstance = new razorpay({
 const placeOrder = async (req, res) => {
   try {
     const {userId, items, amount, address} = req.body;
+    
+    for (const item of items) {
+      const product = await productModel.findById(item._id);
+      if (!product) {
+        return res.status(404).json({ success: false, message: "Product not found." });
+      }
+    
+      if (product.stock < item.productQuantity) {
+        return res.status(400).json({ success: false, message: `Not enough stock for ${product.name}.` });
+      }
+    
+      product.stock -= item.productQuantity;
+      await product.save();
+    }
 
     //  Fetch User
     const user = await userModel.findById(userId);
@@ -56,11 +71,27 @@ const placeOrderRazorpay = async (req, res) => {
   try {
     const {userId, items, amount, address} = req.body;
     const user = await userModel.findById(userId);
+
+    for (const item of items) {
+      const product = await productModel.findById(item._id);
+      if (!product) {
+        return res.status(404).json({ success: false, message: "Product not found." });
+      }
+    
+      if (product.stock < item.productQuantity) {
+        return res.status(400).json({ success: false, message: `Not enough stock for ${product.name}.` });
+      }
+    
+      product.stock -= item.productQuantity;
+      await product.save();
+    }
+    
     if (!user) {
       return res
         .status(401)
         .json({success: false, message: "User removed. Please sign up again."});
     }
+    
     const orderData = {
       userId,
       items,
@@ -233,6 +264,14 @@ const cancelOrder = async (req, res) => {
         success: false,
         message: "Order already shipped or delivered. Cannot be canceled.",
       });
+    }
+
+    for (const item of order.items) {
+      const product = await productModel.findById(item._id);
+      if (product) {
+        product.stock += item.productQuantity;
+        await product.save();
+      }
     }
 
     order.status = "Cancelled";

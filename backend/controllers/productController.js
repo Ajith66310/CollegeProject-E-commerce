@@ -7,7 +7,7 @@ import jwt from 'jsonwebtoken';
 //  function for add product
 const addProduct = async (req, res) => {
   try {
-    const {name, description, price, category, quantity, bestseller,inStock,expiryDate,stock} = req.body;
+    const {name, description, price, category, quantity, bestseller,stock,expiryDate,} = req.body;
     const image1 = req.files.image1 && req.files.image1[0];
     const image2 = req.files.image2 && req.files.image2[0];
     const image3 = req.files.image3 && req.files.image3[0];
@@ -33,7 +33,7 @@ const addProduct = async (req, res) => {
       quantity: JSON.parse(quantity),
       image: imagesUrl,
       date: Date.now(),
-      inStock,
+      stock: Number(stock),
       expiryDate,
     };
 
@@ -144,5 +144,23 @@ const removeReview = async (req, res) => {
   }
 };
 
+const updateProduct = async (req, res) => {
+  try {
+    console.log("Request Body:", req.body); // Debugging line
+    const { id, price, stock, expiryDate, quantity, bestseller } = req.body;
+    const updatedProduct = await productModel.findByIdAndUpdate(
+      id,
+      { price, stock, expiryDate, quantity, bestseller },
+      { new: true }
+    );
+    if (!updatedProduct) {
+      return res.json({ success: false, message: "Product not found" });
+    }
+    res.json({ success: true, message: "Product updated successfully", product: updatedProduct });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
 
-export {removeReview,addReview,listProducts, addProduct, removeProduct, singleProduct};
+export {updateProduct,removeReview,addReview,listProducts, addProduct, removeProduct, singleProduct};

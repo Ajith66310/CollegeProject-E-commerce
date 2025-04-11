@@ -1,5 +1,5 @@
 import express from "express";
-import {  updateStockStatus,removeUser, getAllUsers } from "../controllers/adminController.js";
+import {removeUser, getAllUsers } from "../controllers/adminController.js";
 
 const router = express.Router();
 
@@ -9,6 +9,6 @@ router.delete("/remove-user/:userId", removeUser);
 // Fetch all users
 router.get("/users", getAllUsers);
 
-router.post('/product/update-stock', updateStockStatus);
+
 
 export default router;

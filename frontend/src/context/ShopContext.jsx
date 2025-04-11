@@ -19,40 +19,55 @@ const ShopContextProvider = (props) => {
   const [products, setProducts] = useState([]);
   const [token, setToken] = useState('')
   const navigate = useNavigate();
-  const addToCart = async (itemId, quantity) => {
-
-    if (!quantity) {
-      toast.error('Select Product Quantity')
+  
+  const addToCart = async (itemId, quantity, productQuantity) => {
+    const product = products.find((p) => p._id === itemId);
+    if (!product) {
+      toast.error("Product not found.");
       return;
-    } else {
-      toast.success("Product added to cart")
     }
-
-    let cartData = structuredClone(cartItems)
-
-    if (!cartData[itemId] || typeof cartData[itemId] !== 'object') {
-      cartData[itemId] = {}; // Ensure cartData[itemId] is an object
-    }
-
-
-    if (cartData[itemId][quantity]) {
-      cartData[itemId][quantity] += 1
-    }
-    else {
-      cartData[itemId][quantity] = 1;
-    }
-
-    setCartItems(cartData);
-
-    if (token) {
-      try {
-        await axios.post(backendUrl + '/api/cart/add', { itemId, quantity }, { headers: { token } })
-      } catch (error) {
-        toast.error(error.message)
+  
+    // Calculate the total quantity of the product in the cart
+    let totalInCart = 0;
+    if (cartItems[itemId]) {
+      for (const size in cartItems[itemId]) {
+        totalInCart += cartItems[itemId][size];
       }
     }
-
-  }
+  
+    // Check if adding the new quantity exceeds the available stock
+    if (totalInCart + productQuantity > product.stock) {
+      toast.error("Not enough stock available.");
+      return;
+    }
+  
+    let cartData = structuredClone(cartItems);
+  
+    if (!cartData[itemId]) {
+      cartData[itemId] = {};
+    }
+  
+    cartData[itemId][quantity] = (cartData[itemId][quantity] || 0) + productQuantity;
+  
+    setCartItems(cartData);
+  
+    // Update the stock in the products array
+    const updatedProducts = products.map((p) => {
+      if (p._id === itemId) {
+        return { ...p, stock: p.stock - productQuantity };
+      }
+      return p;
+    });
+    setProducts(updatedProducts);
+  
+    if (token) {
+      try {
+        await axios.post(backendUrl + '/api/cart/add', { itemId, quantity, productQuantity }, { headers: { token } });
+      } catch (error) {
+        toast.error(error.message);
+      }
+    }
+  };
 
   const getCartCount = () => {
 
@@ -71,20 +86,32 @@ const ShopContextProvider = (props) => {
     }
     return totalCount;
   }
+  
   // update product Quantity
   const updateQuantity = async (itemId, quantity, productQuantity) => {
+    const product = products.find((p) => p._id === itemId);
+    if (!product) {
+      toast.error("Product not found.");
+      return;
+    }
+  
+    if (productQuantity > product.stock) {
+      toast.error("Not enough stock available.");
+      return;
+    }
+  
     let cartData = structuredClone(cartItems);
     cartData[itemId][quantity] = productQuantity;
     setCartItems(cartData);
+  
     if (token) {
       try {
-        await axios.post(backendUrl + '/api/cart/update', { itemId, quantity, productQuantity }, { headers: { token } })
+        await axios.post(backendUrl + '/api/cart/update', { itemId, quantity, productQuantity }, { headers: { token } });
       } catch (error) {
-        console.log(error);
-        toast.error(error.message)
+        toast.error(error.message);
       }
     }
-  }
+  };
 
   const getCartAmount = () => {
     let totalAmount = 0;
@@ -144,7 +171,7 @@ const ShopContextProvider = (props) => {
     showSearch, setShowSearch, search, setSearch,
     cartItems, addToCart, setCartItems,
     getCartCount, updateQuantity,
-    getCartAmount,
+    getCartAmount,setProducts,
     navigate, backendUrl,
     setToken, token, VITE_RAZORPAY_KEY_ID
   }

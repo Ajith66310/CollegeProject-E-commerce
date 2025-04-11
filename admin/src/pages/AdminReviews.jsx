@@ -50,6 +50,11 @@ const AdminReviews = ({token}) => {
       <h2 className="text-xl font-bold mb-4">Product Reviews</h2>
       {products.map(product => (
         <div key={product._id} className="mb-6 p-4 border rounded-lg shadow">
+           <img
+            src={product.image[0]} // Display the first image of the product
+            alt={product.name}
+            className="w-16 h-16 object-cover rounded"
+          />
           <h3 className="text-lg font-semibold">{product.name}</h3>
           {product.reviews.map(review => (
             <div key={review._id} className="flex justify-between items-center border-b py-2">

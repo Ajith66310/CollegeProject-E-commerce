@@ -3,14 +3,17 @@ import { useParams } from 'react-router-dom'
 import { ShopContext } from '../context/ShopContext';
 import { assets } from '../assets/assets';
 import RelatedProducts from '../components/RelatedProducts';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 const Product = () => {
   const { productId } = useParams();
-  const { products, currency, addToCart } = useContext(ShopContext);
+  const navigate = useNavigate();
+  const { products, currency, addToCart,} = useContext(ShopContext);
   const [productData, setProductData] = useState(false);
   const [image, setImage] = useState('');
   const [size, setSize] = useState('');
+  const [productQuantity, setProductQuantity] = useState(1); // Number of units
 
   const fetchProductData = async () => {
     products.map((item) => {
@@ -49,6 +52,7 @@ const Product = () => {
       if (res.ok) {
         setReviewText(" ");
         // Refetch product data to get updated reviews
+        window.location.reload();
         fetchProductData();
       } else {
         toast(data.message || "Failed to submit review");
@@ -59,6 +63,11 @@ const Product = () => {
     }
   };
 
+  useEffect(() => {
+    if (productData && productData.stock <= 0) {
+      setProductQuantity(0); // Disable quantity input when stock is 0
+    }
+  }, [productData]);
 
   return productData ? (
     <div className='border-t-2 pt-10 transition-opacity ease-in duration-500 opacity-100'>
@@ -90,25 +99,67 @@ const Product = () => {
           </div>
           <p className='mt-5 text-3xl font-medium'>{currency}{productData.price}</p>
           <p className='mt-5 text-gray-500 md:w-4/5'>{productData.description}</p>
-          <div className='flex flex-col gap-4 my-8'>
-            <p>Quantity</p>
+
+
+
+          {/* Quantity (Weight/Gram) Selection */}
+          <div className='mt-5'>
+            <label htmlFor="size" className='block text-sm font-medium mb-2'>Weight/Size</label>
             <div className='flex gap-2'>
               {productData.quantity.map((item, index) => (
-                <button onClick={() => setSize(item)} className={`border py-2 px-4 bg-gray-100 ${item === size ? 'border-green-500' : ''} `} key={index}>{item}</button>
+                <button
+                  key={index}
+                  onClick={() => setSize(item)}
+                  className={`border py-2 px-4 bg-gray-100 ${item === size ? 'border-green-500' : ''}`}
+                >
+                  {item}
+                </button>
               ))}
             </div>
           </div>
-          <p className={`mt-5 text-sm font-medium ${productData.inStock ? 'text-green-500' : 'text-red-500'}`}>
-            {productData.inStock ? "In Stock" : "Out of Stock"}
-          </p>
+
+          {/* Product Quantity (Number of Units) Input */}
+          <div className='mt-5 mb-2'>
+            <label htmlFor="productQuantity" className='block text-sm font-medium mb-2'>Units</label>
+            <input
+              id="productQuantity"
+              type="number"
+              min={1}
+              max={productData.stock}
+              value={productData.stock > 0 ? productQuantity : 0}
+              onChange={(e) => setProductQuantity(Number(e.target.value))}
+              className='border px-3 py-2 w-20'
+              placeholder="1"
+              disabled={productData.stock <= 0}
+            />
+          </div>
+
+          <div className='mt-5'>
+            <p className={`text-sm font-medium ${productData.stock > 0 ? 'text-green-500' : 'text-red-500'}`}>
+              {productData.stock > 0 ? `In Stock (${productData.stock}) ` : 'Out of Stock'}
+            </p>
+          </div>
+
+          {/* Add to Cart Button */}
           <button
-            onClick={() => addToCart(productData._id, size)}
-            className={`px-8 py-3 text-sm text-white ${productData.inStock ? 'bg-black active:bg-gray-700' : 'bg-gray-400 cursor-not-allowed'
-              }`}
-            disabled={!productData.inStock} // Disable the button if the product is out of stock
+            onClick={() => {
+              if (!size) {
+                toast.error("Please select a weight/size before adding to cart.");
+                return;
+              }
+              if (productQuantity < 1) {
+                toast.error("Please enter a valid number of units.");
+                return;
+              }
+              addToCart(productData._id, size, productQuantity);
+              navigate('/cart'); 
+            }}
+            className={`px-8 py-3 text-sm text-white ${productData.stock > 0 ? 'bg-black' : 'bg-gray-400 cursor-not-allowed'}`}
+            disabled={productData.stock <= 0}
           >
-            ADD TO CART
+            {productData.stock > 0 ? "ADD TO CART" : "OUT OF STOCK"}
           </button>
+
           <hr className='mt-8 sm:w-4/5' />
           <div className='text-sm text-gray-500 mt-5 flex flex-col gap-1'>
             <p>100% original product.</p>
@@ -117,7 +168,7 @@ const Product = () => {
           </div>
         </div>
       </div>
-      {/* Description & Review Section*/}
+   
       {/* Description & Review Section */}
       <div className='mt-20'>
         <div className='flex border-b'>

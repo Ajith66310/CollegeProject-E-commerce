@@ -34,24 +34,3 @@ export const getAllUsers = async (req, res) => {
   }
 };
 
-
-export const updateStockStatus = async (req, res) => {
-  try {
-    const { id, status } = req.body;
-
-    const product = await productModel.findByIdAndUpdate(
-      id,
-      { inStock: status },
-      { new: true }
-    );
-
-    if (!product) {
-      return res.status(404).json({ success: false, message: "Product not found" });
-    }
-
-    res.status(200).json({ success: true, message: "Stock status updated successfully", product });
-  } catch (error) {
-    console.error('Error:', error.message); // Debugging
-    res.status(500).json({ success: false, message: "Error updating stock status", error: error.message });
-  }
-};

@@ -17,27 +17,27 @@ router.get("/", async (req, res) => {
     const totalRevenue = totalRevenueData.length > 0 ? totalRevenueData[0].total : 0;
 
   
-    const salesData = await Order.aggregate([
-      {
-        $group: {
-          _id: "$date",
-          sales: { $sum: "$amount" },
-        },
-      },
-      { $sort: { _id: 1 } },
-    ]);
-
     // const salesData = await Order.aggregate([
     //   {
     //     $group: {
-    //       _id: {
-    //         $dateToString: { format: "%Y-%m-%d", date: { $toDate: "$date" } },
-    //       },
+    //       _id: "$date",
     //       sales: { $sum: "$amount" },
     //     },
     //   },
     //   { $sort: { _id: 1 } },
     // ]);
+
+    const salesData = await Order.aggregate([
+      {
+        $group: {
+          _id: {
+            $dateToString: { format: "%Y-%m-%d", date: { $toDate: "$date" } },
+          },
+          sales: { $sum: "$amount" },
+        },
+      },
+      { $sort: { _id: 1 } },
+    ]);
 
     res.json({
       totalProducts,

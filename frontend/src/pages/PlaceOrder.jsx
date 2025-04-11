@@ -103,7 +103,10 @@ const PlaceOrder = () => {
 
           if (response.data.success) {
             setCartItems({});
+            toast.success("Order placed successfully!", { autoClose: 3000 });
             navigate('/orders');
+          }else {
+            toast.error(response.data.message || "Failed to place the order."); // Error toast
           }
           break;
         }
@@ -117,7 +120,7 @@ const PlaceOrder = () => {
 
           if (responseRazorpay.data.success) {
             initPay(responseRazorpay.data.order);
-          }
+          } 
         }
           break;
         default:

@@ -8,8 +8,8 @@ const productSchema = new mongoose.Schema({
   category: {type: String, required: true},
   quantity: {type: Array, required: true},
   bestseller: {type: Boolean, required: true},
+  stock: {type: Number, required: true, default: 0},
   date: {type: Number, required: true},
-  inStock: { type: Boolean, required: true, default: true },
   expiryDate: {type: Date, required: true},
   reviews: [
     {
@@ -21,12 +21,12 @@ const productSchema = new mongoose.Schema({
   ],
 });
 productSchema.pre("find", function (next) {
-  this.find({ expiryDate: { $gt: new Date() } }); // Exclude expired products
+  this.find({expiryDate: {$gt: new Date()}}); // Exclude expired products
   next();
 });
 
 productSchema.pre("findOne", function (next) {
-  this.findOne({ expiryDate: { $gt: new Date() } }); // Exclude expired products in single retrievals
+  this.findOne({expiryDate: {$gt: new Date()}}); // Exclude expired products in single retrievals
   next();
 });
 
