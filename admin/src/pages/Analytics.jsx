@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { backendUrl } from '../App';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
+import CountUp from './CountUp'
+
 
 export default function Analytics() {
   const [data, setData] = useState({ totalProducts: 0, totalUsers: 0, totalRevenue: 0, salesData: [] });
@@ -21,17 +23,38 @@ export default function Analytics() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="bg-white p-4 shadow-md rounded-lg text-center">
           <h2 className="text-lg font-semibold">Products in Stock</h2>
-          <p className="text-2xl font-bold">{data.totalProducts}</p>
+          <CountUp
+            from={0}
+            to={data.totalProducts}
+            separator=","
+            direction="up"
+            duration={1}
+            className="count-up-text text-2xl font-bold"
+          />
         </div>
 
         <div className="bg-white p-4 shadow-md rounded-lg text-center">
           <h2 className="text-lg font-semibold">Total Users</h2>
-          <p className="text-2xl font-bold">{data.totalUsers}</p>
+          <CountUp
+            from={0}
+            to={data.totalUsers}
+            separator=","
+            direction="up"
+            duration={1}
+            className="count-up-text text-2xl font-bold"
+          />
         </div>
 
         <div className="bg-white p-4 shadow-md rounded-lg text-center">
-          <h2 className="text-lg font-semibold">Total Revenue</h2>
-          <p className="text-2xl font-bold text-green-600">₹{data.totalRevenue}</p>
+          <h2 className="text-lg font-semibold">Total Revenue ₹</h2>
+          <CountUp
+            from={0}
+            to={data.totalRevenue}
+            separator=","
+            direction="up"
+            duration={1}
+            className="count-up-text text-2xl font-bold text-green-600"
+          />
         </div>
       </div>
 
