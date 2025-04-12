@@ -14,6 +14,7 @@ const Product = () => {
   const [image, setImage] = useState('');
   const [size, setSize] = useState('');
   const [productQuantity, setProductQuantity] = useState(1); // Number of units
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // State for shipping/return dropdown
 
   const fetchProductData = async () => {
     products.map((item) => {
@@ -160,13 +161,29 @@ const Product = () => {
             {productData.stock > 0 ? "ADD TO CART" : "OUT OF STOCK"}
           </button>
 
-          <hr className='mt-8 sm:w-4/5' />
-          <div className='text-sm text-gray-500 mt-5 flex flex-col gap-1'>
-            <p>100% original product.</p>
-            <p>Cash on delivery is available on this product.</p>
-            <p>Easy return and exchange policy.</p>
+          <hr className='mt-8 sm:w-5/5' />
+          
+          {/* Shipping and Return Dropdown */}
+          <div className='mt-5'>
+            <div
+              className='flex justify-between items-center cursor-pointer'
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            >
+              <p className='text-sm font-medium'>Shipping and Return Policy</p>
+              <span className='text-xl font-medium'>{isDropdownOpen ? '-' : '+'}</span>
+            </div>
+            {isDropdownOpen && (
+              <div className='text-sm text-gray-500 mt-2 flex flex-col gap-1'>
+                <p>100% original product.</p>
+                <p>Cash on delivery is available on this product.</p>
+                <p>Return only for packed product (no return for fruits and vegetables).</p>
+                <p>Shipping fee : 60</p>
+              </div>
+            )}
           </div>
+          
         </div>
+
       </div>
    
       {/* Description & Review Section */}
