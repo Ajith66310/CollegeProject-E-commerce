@@ -7,7 +7,7 @@ const LatestCollection = () => {
   const {products} = useContext(ShopContext)
 const [latestProducts,setLatestProducts] = useState([]);
 useEffect(()=>{
-  setLatestProducts(products.slice(0,10));
+  setLatestProducts(products.slice(0,10).reverse());
 },[products])
 
   return (

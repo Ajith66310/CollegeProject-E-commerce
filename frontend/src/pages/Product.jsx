@@ -176,6 +176,7 @@ const Product = () => {
               <div className='text-sm text-gray-500 mt-2 flex flex-col gap-1'>
                 <p>100% original product.</p>
                 <p>Cash on delivery is available on this product.</p>
+                <p>No cancellation available after the product is shipped.</p>
                 <p>Return only for packed product (no return for fruits and vegetables).</p>
                 <p>Shipping fee : 60</p>
               </div>

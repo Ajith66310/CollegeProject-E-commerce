@@ -10,6 +10,7 @@ import axios from 'axios'
 const PlaceOrder = () => {
   const { navigate, token, backendUrl, cartItems, setCartItems, getCartAmount, delivery_fee, products, VITE_RAZORPAY_KEY_ID } = useContext(ShopContext);
   const [method, setMethod] = useState('cod');
+  const [isValidatingZipcode, setIsValidatingZipcode] = useState(false);
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -34,6 +35,7 @@ const PlaceOrder = () => {
     }
     setFormData((data) => ({ ...data, [name]: value }));
   };
+
 
 
   const initPay = (order) => {
@@ -105,7 +107,7 @@ const PlaceOrder = () => {
             setCartItems({});
             toast.success("Order placed successfully!", { autoClose: 3000 });
             navigate('/orders');
-          }else {
+          } else {
             toast.error(response.data.message || "Failed to place the order."); // Error toast
           }
           break;
@@ -120,7 +122,7 @@ const PlaceOrder = () => {
 
           if (responseRazorpay.data.success) {
             initPay(responseRazorpay.data.order);
-          } 
+          }
         }
           break;
         default:
@@ -141,7 +143,7 @@ const PlaceOrder = () => {
 
   const validateZipcode = async () => {
     try {
-
+      setIsValidatingZipcode(true);
       const response = await axios.post("http://localhost:4000/api/order/validate-zipcode", {
         zipcode: formData.zipcode,
       });
@@ -155,6 +157,8 @@ const PlaceOrder = () => {
       console.error("Error validating zipcode:", error);
       toast.error("Error validating zipcode");
       setIsDeliverable(false);
+    } finally {
+      setIsValidatingZipcode(false);
     }
   };
 
@@ -240,11 +244,13 @@ const PlaceOrder = () => {
           <div className='w-full text-end mt-8'>
             <button
               type="submit"
-              className={`bg-black text-white px-16 py-3 text-sm ${isDeliverable === false ? "opacity-50 cursor-not-allowed" : ""
+              className={`bg-black text-white px-16 py-3 text-sm ${isValidatingZipcode || isDeliverable === false
+                  ? "opacity-50 cursor-not-allowed"
+                  : ""
                 }`}
-              disabled={isDeliverable === false}
+              disabled={isValidatingZipcode || isDeliverable === false}
             >
-              PLACE ORDER
+              {isValidatingZipcode ? "CHECKING ZIPCODE..." : "PLACE ORDER"}
             </button>
           </div>
         </div>

@@ -89,7 +89,7 @@ const Cart = () => {
                     </div>
                   </div>
                 </div>
-                <p className='max-w-10 sm:max-w-20 px-1 sm:px-2 py-1'>{item.productQuantity}</p>
+                <p className='border text-center w-5'>{item.productQuantity}</p>
                 <img
                   onClick={() => {
                     const productData = products.find((product) => product._id === item._id);
