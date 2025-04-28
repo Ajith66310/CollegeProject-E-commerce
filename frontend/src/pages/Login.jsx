@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { ShopContext } from "../context/ShopContext";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import eye icons
 
 const Login = () => {
   const [currentState, setCurrentState] = useState("Login");
@@ -10,6 +11,9 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [newPassword, setNewPassword] = useState(""); // For forgot password
   const [showForgotPassword, setShowForgotPassword] = useState(false); // Toggle forgot password form
+  const [showPassword, setShowPassword] = useState(false); // Toggle password visibility
+  const [showNewPassword, setShowNewPassword] = useState(false);
+
 
   const { setToken, navigate, backendUrl } = useContext(ShopContext);
 
@@ -101,14 +105,23 @@ const Login = () => {
             className="w-full px-3 py-2 border border-gray-800"
             required
           />
-          <input
-            onChange={(e) => setPassword(e.target.value)}
-            value={password}
-            type="password"
-            placeholder="Password"
-            className="w-full px-3 py-2 border border-gray-800"
-            required
-          />
+          <div className="relative w-full">
+            <input
+              onChange={(e) => setPassword(e.target.value)}
+              value={password}
+              type={showPassword ? "text" : "password"}
+              placeholder="Password"
+              className="w-full px-3 py-2 border border-gray-800 pr-10"
+              required
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute inset-y-0 right-0 pr-3 flex items-center"
+            >
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </button>
+          </div>
           <div className="w-full flex justify-between text-sm mt-[-8px]">
             <p
               className="cursor-pointer"
@@ -153,14 +166,23 @@ const Login = () => {
             className="w-full px-3 py-2 border border-gray-800"
             required
           />
-          <input
-            onChange={(e) => setNewPassword(e.target.value)}
-            value={newPassword}
-            type="password"
-            placeholder="New Password"
-            className="w-full px-3 py-2 border border-gray-800"
-            required
-          />
+          <div className="relative w-full">
+            <input
+              onChange={(e) => setNewPassword(e.target.value)}
+              value={newPassword}
+              type={showNewPassword ? "text" : "password"}
+              placeholder="New Password"
+              className="w-full px-3 py-2 border border-gray-800 pr-10"
+              required
+            />
+            <button
+              type="button"
+              onClick={() => setShowNewPassword(!showNewPassword)}
+              className="absolute inset-y-0 right-0 pr-3 flex items-center"
+            >
+              {showNewPassword ? <FaEyeSlash /> : <FaEye />}
+            </button>
+          </div>
           <button className="bg-black text-white font-light px-8 py-2 mt-4">
             Reset Password
           </button>
