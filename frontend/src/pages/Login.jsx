@@ -12,8 +12,7 @@ const Login = () => {
   const [newPassword, setNewPassword] = useState(""); // For forgot password
   const [showForgotPassword, setShowForgotPassword] = useState(false); // Toggle forgot password form
   const [showPassword, setShowPassword] = useState(false); // Toggle password visibility
-  const [showNewPassword, setShowNewPassword] = useState(false);
-
+  const [showNewPassword, setShowNewPassword] = useState(false); // Toggle new password visibility
 
   const { setToken, navigate, backendUrl } = useContext(ShopContext);
 
@@ -56,6 +55,14 @@ const Login = () => {
 
   const onForgotPasswordHandler = async (event) => {
     event.preventDefault();
+
+    // Regular expression for strong password validation
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?#&]{8,}$/;
+    if (!passwordRegex.test(newPassword)) {
+      toast.error("Password must be at least 8 characters long and include at least one letter, one number, and one symbol");
+      return;
+    }
+
     try {
       const response = await axios.post(backendUrl + "/api/user/forgot-password", {
         email,

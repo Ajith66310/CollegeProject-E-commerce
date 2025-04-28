@@ -35,7 +35,6 @@ const registerUser = async (req, res) => {
     const {name, password} = req.body;
     let {email} =req.body;
 
-
      // Check if the email contains uppercase letters
      const uppercaseRegex = /[A-Z]/;
      if (uppercaseRegex.test(email)) {
@@ -64,16 +63,21 @@ const registerUser = async (req, res) => {
     if (exists) {
       return res.json({success: false, message: "User already exists"});
     }
+
     // validating email format & strong password
     if (!validator.isEmail(email)) {
       return res.json({success: false, message: "Please enter a valid email"});
     }
-    if (password.length < 8) {
+
+    // Regular expression for strong password validation
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?#&]{8,}$/;
+    if (!passwordRegex.test(password)) {
       return res.json({
         success: false,
-        message: "Password must have 8 character",
+        message: "Password must be at least 8 characters long and include at least one letter, one number, and one symbol",
       });
     }
+
     // hashing user password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
@@ -117,11 +121,12 @@ const forgotPassword = async (req, res) => {
       return res.json({ success: false, message: "User doesn't exist" });
     }
 
-    // Validate the new password
-    if (newPassword.length < 8) {
+    // Regular expression for strong password validation
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?#&]{8,}$/;
+    if (!passwordRegex.test(newPassword)) {
       return res.json({
         success: false,
-        message: "Password must have at least 8 characters",
+        message: "Password must be at least 8 characters long and include at least one letter, one number, and one symbol",
       });
     }
 
