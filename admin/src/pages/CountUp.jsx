@@ -4,96 +4,35 @@ import { useInView, useMotionValue, useSpring } from "framer-motion";
 export default function CountUp({
   to,
   from = 0,
-  direction = "up",
-  delay = 0,
   duration = 2, // Duration of the animation in seconds
   className = "",
-  startWhen = true,
-  separator = "",
-  onStart,
-  onEnd,
 }) {
   const ref = useRef(null);
-  const motionValue = useMotionValue(direction === "down" ? to : from);
-
-  // Calculate damping and stiffness based on duration
-  const damping = 20 + 40 * (1 / duration); // Adjust this formula for finer control
-  const stiffness = 100 * (1 / duration); // Adjust this formula for finer control
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const motionValue = useMotionValue(from);
 
   const springValue = useSpring(motionValue, {
-    damping,
-    stiffness,
+    damping: 30,
+    stiffness: 50,
   });
 
-  const isInView = useInView(ref, { once: true, margin: "0px" });
-
-  // Set initial text content to the initial value based on direction
   useEffect(() => {
-    if (ref.current) {
-      ref.current.textContent = String(direction === "down" ? to : from);
+    if (isInView) {
+      motionValue.set(to);
     }
-  }, [from, to, direction]);
+  }, [isInView, to, motionValue]);
 
-  // Start the animation when in view and startWhen is true
-  useEffect(() => {
-    if (isInView && startWhen) {
-      if (typeof onStart === "function") {
-        onStart();
-      }
-
-      const timeoutId = setTimeout(() => {
-        motionValue.set(direction === "down" ? from : to);
-      }, delay * 1000);
-
-      const durationTimeoutId = setTimeout(
-        () => {
-          if (typeof onEnd === "function") {
-            onEnd();
-          }
-        },
-        delay * 1000 + duration * 1000
-      );
-
-      return () => {
-        clearTimeout(timeoutId);
-        clearTimeout(durationTimeoutId);
-      };
-    }
-  }, [
-    isInView,
-    startWhen,
-    motionValue,
-    direction,
-    from,
-    to,
-    delay,
-    onStart,
-    onEnd,
-    duration,
-  ]);
-
-  // Update text content with formatted number on spring value change
   useEffect(() => {
     const unsubscribe = springValue.on("change", (latest) => {
       if (ref.current) {
-        const options = {
-          useGrouping: !!separator,
-          minimumFractionDigits: 0,
+        ref.current.textContent = Intl.NumberFormat("en-US", {
           maximumFractionDigits: 0,
-        };
-
-        const formattedNumber = Intl.NumberFormat("en-US", options).format(
-          latest.toFixed(0)
-        );
-
-        ref.current.textContent = separator
-          ? formattedNumber.replace(/,/g, separator)
-          : formattedNumber;
+        }).format(latest.toFixed(0));
       }
     });
 
     return () => unsubscribe();
-  }, [springValue, separator]);
+  }, [springValue]);
 
   return <span className={`${className}`} ref={ref} />;
 }
