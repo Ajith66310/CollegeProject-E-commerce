@@ -1,6 +1,6 @@
-# 🛒 MERN Stack eCommerce Website
+# 🛒 MERN Stack E-Commerce Website
 
-This is a full-featured eCommerce application built with the **MERN Stack (MongoDB, Express.js, React, Node.js)**. It includes user authentication, product management, cart, checkout, admin panel, and analytics features.
+This is a full-featured E-Commerce application built with the **MERN Stack (MongoDB, Express.js, React, Node.js)**. It includes user authentication, product management, cart, checkout, admin panel, and analytics features.
 
 ## 🚀 Features
 
@@ -45,6 +45,80 @@ This is a full-featured eCommerce application built with the **MERN Stack (Mongo
 - ESLint + Prettier
 - Git & GitHub for version control
 - Dotenv for environment variables
+  
+**📂 Project Structure**
+<pre>
+  
+COLLEGEPROJECT-E-COMMERCE/
+│
+├── admin/                     # Admin Panel (React + Vite)
+│   └── src/
+│       ├── assets/            # Static files like images, icons, logos
+│       ├── components/        # Reusable UI components (Navbar, Sidebar, Login, etc.)
+│       ├── pages/             # Different admin pages (Product CRUD, Orders, Analytics)
+│
+├── backend/                   # Backend (Node.js + Express + MongoDB)
+│   ├── config/                # Database connection & environment config
+│   ├── controllers/           # Request handlers (business logic for routes)
+│   ├── middleware/            # Custom middleware (auth, error handling, validation)
+│   ├── models/                # Mongoose models (User, Product, Order schemas)
+│   ├── routes/                # API endpoints (user, product, order, auth, etc.)
+│   ├── templates/             # Email templates for Nodemailer
+│   └── utils/                 # Helper functions (JWT, email, validators, etc.)
+│
+├── frontend/                  # User Frontend (React + Vite)
+│   └── src/
+│       ├── assets/            # Static files like images, banners, icons
+│       ├── components/        # Reusable UI components (Navbar, Footer, ProductCard, etc.)
+│       ├── context/           # Context API for global state management
+│       └── pages/             # Different user pages (Home, Cart, Checkout, Orders, etc.)
+│
+└── README.md                  # Project documentation
 
+</pre>
 
+**Frontend Setup**
 
+<pre>
+cd frontend 
+npm install
+npm run dev
+</pre>
+
+**Backend Setup**
+
+<pre>
+cd backend 
+npm install
+npm run server
+</pre>
+
+Create a **.env** file inside **backend/**:
+
+<pre>
+PORT=YOUR_PORT_NUMBER
+CLOUDINARY_API_KEY =YOUR_CLOUDINARY_API_KEY
+CLOUDINARY_SECRET_KEY =YOUR_CLOUDINARY_SECRET_KEY
+CLOUDINARY_NAME =YOUR_CLOUDINARY_NAME
+JWT_SECRET =YOUR_JWT_SECRET
+ADMIN_EMAIL =YOUR_EMAIL/ADMIN
+ADMIN_PASSWORD =YOUR_ADMIN_PASSWORD
+RAZORPAY_KEY_SECRET =YOUR_RAZORPAY_KEY_SECRET
+RAZORPAY_KEY_ID =YOUR_RAZORPAY_KEY_ID
+EMAIL_USER =YOUR_APP_EMAIL
+EMAIL_PASS =YOUR_APP_EMAIL_PASSWORD
+</pre>
+
+**Admin Setup**
+
+<pre>
+cd admin 
+npm install
+npm run dev
+</pre>
+
+Create a **.env** file inside **admin/**:
+
+<pre>
+VITE_BACKEND_URL=YOUR_BACKEND_URL
+</pre>
