@@ -1,10 +1,11 @@
 import mongoose from "mongoose";
+import 'dotenv/config.js'
 
 const connectDB = async () => {
   mongoose.connection.on("connected", () => {
     console.log("DB connected");
   });
-  await mongoose.connect("mongodb+srv://Ajith:202930@cluster0.6imot.mongodb.net/E-commerce");
+  await mongoose.connect(process.env.MONGODB_URI);
 };
 
 export default connectDB;
