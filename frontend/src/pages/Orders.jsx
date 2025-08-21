@@ -6,14 +6,14 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 
 const Orders = () => {
-  const { backendUrl, token, currency } = useContext(ShopContext);
+  const { token, currency } = useContext(ShopContext);
   const [orderData, setOrderData] = useState([])
   const loadOrderData = async () => {
     try {
       if (!token) {
         return null
       }
-      const response = await axios.post(backendUrl + '/api/order/userorders', {}, { headers: { token } })
+      const response = await axios.post(`${import.meta.env.backendUrl}/api/order/userorders`, {}, { headers: { token } })
       if (response.data.success) {
         let allOrdersItem = []
         response.data.orders.map((order) => {
@@ -40,7 +40,7 @@ const Orders = () => {
 
   const handleCancelOrder = async (orderId) => {
     try {
-      const response = await axios.post(`${backendUrl}/api/order/cancel`, { orderId }, { headers: { token } });
+      const response = await axios.post(`${import.meta.env.backendUrl}/api/order/cancel`, { orderId }, { headers: { token } });
       if (response.data.success) {
         loadOrderData(); // Refresh orders after cancellation
         toast.success('Product cancelled Successfully')
@@ -52,7 +52,7 @@ const Orders = () => {
 
   const handleReturnOrder = async (orderId) => {
     try {
-      const response = await axios.post(`${backendUrl}/api/order/return`, { orderId }, { headers: { token } });
+      const response = await axios.post(`${import.meta.env.backendUrl}/api/order/return`, { orderId }, { headers: { token } });
       console.log(response)
       if (response.data.success) {
         loadOrderData(); // Refresh orders after return request

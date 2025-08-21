@@ -11,8 +11,6 @@ const ShopContextProvider = (props) => {
 
   const currency = '₹';
   const delivery_fee = 60;
-  const backendUrl = 'http://localhost:4000'
-  const VITE_RAZORPAY_KEY_ID = "rzp_test_uLqCSSHPx5VBho"
   const [search, setSearch] = useState('');
   const [showSearch, setShowSearch] = useState(false);
   const [cartItems, setCartItems] = useState({});
@@ -62,7 +60,7 @@ const ShopContextProvider = (props) => {
   
     if (token) {
       try {
-        await axios.post(backendUrl + '/api/cart/add', { itemId, quantity, productQuantity }, { headers: { token } });
+        await axios.post(`${import.meta.env.backendUrl}/api/cart/add`, { itemId, quantity, productQuantity }, { headers: { token } });
       } catch (error) {
         toast.error(error.message);
       }
@@ -106,7 +104,7 @@ const ShopContextProvider = (props) => {
   
     if (token) {
       try {
-        await axios.post(backendUrl + '/api/cart/update', { itemId, quantity, productQuantity }, { headers: { token } });
+        await axios.post(`${import.meta.env.backendUrl}/api/cart/update`, { itemId, quantity, productQuantity }, { headers: { token } });
       } catch (error) {
         toast.error(error.message);
       }
@@ -133,7 +131,7 @@ const ShopContextProvider = (props) => {
 
   const getProductsData = async () => {
     try {
-      const response = await axios.get(backendUrl + '/api/product/list')
+      const response = await axios.get(`${import.meta.env.backendUrl}/api/product/list`)
       if (response.data.success) {
         setProducts(response.data.products)
       } else {
@@ -146,7 +144,7 @@ const ShopContextProvider = (props) => {
   }
   const getUserCart = async (token) => {
     try {
-      const response = await axios.post(backendUrl + '/api/cart/get', {}, { headers: { token } })
+      const response = await axios.post(`${import.meta.env.backendUrl}/api/cart/get` , {}, { headers: { token } })
       if (response.data.success) {
         setCartItems(response.data.cartData)
       }
@@ -172,8 +170,8 @@ const ShopContextProvider = (props) => {
     cartItems, addToCart, setCartItems,
     getCartCount, updateQuantity,
     getCartAmount,setProducts,
-    navigate, backendUrl,
-    setToken, token, VITE_RAZORPAY_KEY_ID
+    navigate, 
+    setToken, token, 
   }
   return (
     <ShopContext.Provider value={value}>

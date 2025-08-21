@@ -14,13 +14,13 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false); // Toggle password visibility
   const [showNewPassword, setShowNewPassword] = useState(false); // Toggle new password visibility
 
-  const { setToken, navigate, backendUrl } = useContext(ShopContext);
+  const { setToken, navigate } = useContext(ShopContext);
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
     try {
       if (currentState === "Sign Up") {
-        const response = await axios.post(backendUrl + "/api/user/register", {
+        const response = await axios.post(`${import.meta.env.backendUrl}/api/user/register`, {
           name,
           email,
           password,
@@ -34,7 +34,7 @@ const Login = () => {
           toast.error(response.data.message);
         }
       } else {
-        const response = await axios.post(backendUrl + "/api/user/login", {
+        const response = await axios.post(`${import.meta.env.backendUrl}/api/user/login`, {
           email,
           password,
         });
@@ -64,7 +64,7 @@ const Login = () => {
     }
 
     try {
-      const response = await axios.post(backendUrl + "/api/user/forgot-password", {
+      const response = await axios.post(`${import.meta.env.backendUrl}/api/user/forgot-password`, {
         email,
         newPassword,
       });

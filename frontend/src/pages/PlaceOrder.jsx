@@ -8,7 +8,7 @@ import axios from 'axios'
 
 
 const PlaceOrder = () => {
-  const { navigate, token, backendUrl, cartItems, setCartItems, getCartAmount, delivery_fee, products, VITE_RAZORPAY_KEY_ID } = useContext(ShopContext);
+  const { navigate, token,cartItems, setCartItems, getCartAmount, delivery_fee, products} = useContext(ShopContext);
   const [method, setMethod] = useState('cod');
   const [isValidatingZipcode, setIsValidatingZipcode] = useState(false);
   const [formData, setFormData] = useState({
@@ -40,7 +40,7 @@ const PlaceOrder = () => {
 
   const initPay = (order) => {
     const options = {
-      key: VITE_RAZORPAY_KEY_ID,
+      key:`${import.meta.env.VITE_RAZORPAY_KEY_ID}`,
       amount: order.amount,
       currency: order.currency,
       name: 'Order Payment',
@@ -50,7 +50,7 @@ const PlaceOrder = () => {
       handler: async (response) => {
         console.log(response);
         try {
-          const { data } = await axios.post(backendUrl + '/api/order/verifyRazorpay', response, { headers: { token } })
+          const { data } = await axios.post(`${import.meta.env.backendUrl}/api/order/verifyRazorpay`, response, { headers: { token } })
           if (data.success) {
             navigate('/orders')
             setCartItems({})
@@ -96,7 +96,7 @@ const PlaceOrder = () => {
 
       switch (method) {
         case 'cod': {
-          const response = await axios.post(backendUrl + '/api/order/place', orderData, { headers: { token } });
+          const response = await axios.post(`${import.meta.env.backendUrl}/api/order/place`, orderData, { headers: { token } });
 
           if (response.status === 401 || response.data.message === "User removed. Please sign up again.") {
             handleUnauthorizedUser();
@@ -113,7 +113,7 @@ const PlaceOrder = () => {
           break;
         }
         case 'razorpay': {
-          const responseRazorpay = await axios.post(backendUrl + '/api/order/razorpay', orderData, { headers: { token } });
+          const responseRazorpay = await axios.post(`${import.meta.env.backendUrl}/api/order/razorpay`, orderData, { headers: { token } });
 
           if (responseRazorpay.status === 401 || responseRazorpay.data.message === "User removed. Please sign up again.") {
             handleUnauthorizedUser();
@@ -144,7 +144,7 @@ const PlaceOrder = () => {
   const validateZipcode = async () => {
     try {
       setIsValidatingZipcode(true);
-      const response = await axios.post("http://localhost:4000/api/order/validate-zipcode", {
+      const response = await axios.post(`${import.meta.env.backendUrl}/api/order/validate-zipcode`, {
         zipcode: formData.zipcode,
       });
 
