@@ -13,6 +13,9 @@ This is a full-featured E-Commerce application built with the **MERN Stack (Mong
 - Order cancellation (within 1 hour)
 - Product reviews & ratings
 - View order history
+- Product search & filters (by category, price etc.)
+- Secure online payment via Razorpay
+- Delivery eligibility check (restrict orders outside 5 km radius)
 
 ### 🛠 Admin Features
 - Admin authentication
