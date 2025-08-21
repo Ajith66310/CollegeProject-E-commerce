@@ -10,7 +10,6 @@ import orderRouter from "./routes/orderRoute.js";
 import analyticsRoutes from "./routes/analytics.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import serverless from "serverless-http";
-import cors from "cors";
 
 const app = express();
 connectDB();
