@@ -26,11 +26,10 @@ const allowedOrigins = [
 app.use(cors({
   origin: allowedOrigins,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // include OPTIONS
-  allowedHeaders: ["Content-Type", "Authorization"],   // add headers you send
+  allowedHeaders: ["Content-Type", "Authorization", "token"], // ✅ add "token"
   credentials: true
 }));
 
-// Handle preflight explicitly
 app.options("*", cors());
 
 
