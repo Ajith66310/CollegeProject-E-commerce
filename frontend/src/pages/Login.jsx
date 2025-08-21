@@ -48,8 +48,8 @@ const Login = () => {
         }
       }
     } catch (error) {
-      console.log(error);
-      toast.error(error.message);
+      console.error("Login/Signup error:", error.response ? error.response.data : error);
+      toast.error(error.response?.data?.message || "Something went wrong");
     }
   };
 
@@ -76,8 +76,8 @@ const Login = () => {
         toast.error(response.data.message);
       }
     } catch (error) {
-      console.log(error);
-      toast.error(error.message);
+      console.error("Login/Signup error:", error.response ? error.response.data : error);
+      toast.error(error.response?.data?.message || "Something went wrong");
     }
   };
 
