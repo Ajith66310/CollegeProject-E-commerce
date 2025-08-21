@@ -33,9 +33,10 @@ app.use(cors({
     }
   },
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization", "token", "Accept", "X-Requested-With"],
+  allowedHeaders: "*",   // ✅ allow all headers
   credentials: true
 }));
+
 
 
 app.options("*", cors());
