@@ -10,12 +10,13 @@ import orderRouter from "./routes/orderRoute.js";
 import analyticsRoutes from "./routes/analytics.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import serverless from "serverless-http";
+import cors from "cors";
 
 const app = express();
 connectDB();
 connectCloudinary();
 
-// ✅ Put CORS at the very top
+
 const allowedOrigins = [
   "http://localhost:5173",  // local frontend
   "http://localhost:5174",  // local admin
@@ -23,20 +24,15 @@ const allowedOrigins = [
   "https://lakshmi-project-admin.vercel.app"     // production admin
 ];
 
-app.use((req, res, next) => {
-  const origin = req.headers.origin;
-  if (allowedOrigins.includes(origin)) {
-    res.setHeader("Access-Control-Allow-Origin", origin);
-  }
-  res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  res.setHeader("Access-Control-Allow-Credentials", "true");
+app.use(cors({
+  origin: allowedOrigins,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // include OPTIONS
+  allowedHeaders: ["Content-Type", "Authorization"],   // add headers you send
+  credentials: true
+}));
 
-  if (req.method === "OPTIONS") {
-    return res.status(200).end();
-  }
-  next();
-});
+// Handle preflight explicitly
+app.options("*", cors());
 
 
 // ✅ Body parser after CORS
