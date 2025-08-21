@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { backendUrl, currency } from '../App';
+import { currency } from '../App';
 import { toast } from 'react-toastify';
 
 const List = ({ token }) => {
@@ -9,7 +9,7 @@ const List = ({ token }) => {
 
   const fetchList = async () => {
     try {
-      const response = await axios.get(backendUrl + '/api/product/list');
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/product/list`);
       if (response.data.success) {
         setList(response.data.products);
       } else {
@@ -24,7 +24,7 @@ const List = ({ token }) => {
   const removeProduct = async (id) => {
     try {
       const response = await axios.post(
-        backendUrl + '/api/product/remove',
+       `${import.meta.env.VITE_BACKEND_URL}/api/product/remove`,
         { id },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -44,7 +44,7 @@ const List = ({ token }) => {
     try {
       console.log('Updated Product:', updatedProduct);
       const response = await axios.post(
-        backendUrl + '/api/product/update',
+        `${import.meta.env.VITE_BACKEND_URL}/api/product/update`,
         updatedProduct,
         { headers: { Authorization: `Bearer ${token}` } }
       );

@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { assets } from '../assets/assets'
 import axios from 'axios'
-import { backendUrl } from '../App'
 import { toast } from 'react-toastify'
 const Add = ({ token }) => {
 
@@ -37,7 +36,7 @@ const Add = ({ token }) => {
       image3 && formData.append("image3", image3)
       image4 && formData.append("image4", image4)
 
-      const response = await axios.post(backendUrl + "/api/product/add", formData, {
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}api/product/add`, formData, {
         headers: { Authorization: `Bearer ${token}` }
       })
 

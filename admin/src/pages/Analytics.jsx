@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { backendUrl } from '../App';
 import CountUp from './CountUp';
 
 const Analytics = () => {
@@ -16,7 +15,7 @@ const Analytics = () => {
   useEffect(() => {
     const fetchAnalytics = async () => {
       try {
-        const response = await axios.get(`${backendUrl}/api/analytics`);
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/analytics`);
         setAnalyticsData(response.data);
       } catch (error) {
         console.error('Error fetching analytics data:', error);

@@ -2,7 +2,6 @@ import React from 'react'
 import { useEffect } from 'react'
 import { useState } from 'react'
 import axios from 'axios'
-import { backendUrl, currency } from '../App'
 import { toast } from 'react-toastify'
 import { assets } from '../assets/assets'
 
@@ -12,7 +11,7 @@ const Orders = () => {
   const fetchAllOrders = async () => {
 
     try {
-      const response = await axios.post(backendUrl + '/api/order/list', {})
+      const response = await axios.post(`${/api/order/list}`, {})
       if (response.data) {
         setOrders(response.data.orders.reverse())
       } else {
@@ -25,7 +24,7 @@ const Orders = () => {
   const statusHandler = async (event, orderId) => {
     try {
       const newStatus = event.target.value;
-      const response = await axios.post(`${backendUrl}/api/order/status`, { orderId, status: event.target.value });
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/order/status`, { orderId, status: event.target.value });
       if (response.data.success) {
         // Instantly update the UI without waiting for next polling
         setOrders((prevOrders) =>

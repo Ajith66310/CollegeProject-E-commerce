@@ -1,6 +1,5 @@
 import axios from 'axios';
 import React, { useState } from 'react'
-import { backendUrl } from '../App';
 import { toast } from 'react-toastify'
 const Login = ({ setToken }) => {
   const [email, setEmail] = useState('');
@@ -8,7 +7,7 @@ const Login = ({ setToken }) => {
   const onSubmitHandler = async (e) => {
     try {
       e.preventDefault();
-      const response = await axios.post(backendUrl + '/api/user/admin', { email, password })
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/user/admin`, { email, password })
 
       if (response.data.success && response.data.token) {  
         setToken(response.data.token);  // Store actual token, not "true"

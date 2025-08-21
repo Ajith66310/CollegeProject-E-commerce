@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { backendUrl } from "../App";
 
 const AdminManagement = () => {
   const [users, setUsers] = useState([]);
@@ -11,7 +10,7 @@ const AdminManagement = () => {
 
   const fetchUsers = async () => {
     try {
-      const res = await axios.get(backendUrl + "/api/admin/users");
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/admin/users`);
       setUsers(res.data);
     } catch (error) {
       console.error("Error fetching users", error);
@@ -20,7 +19,7 @@ const AdminManagement = () => {
 
   const removeUser = async (id) => {
     try {
-      await axios.delete(`${backendUrl}/api/admin/remove-user/${id}`);
+      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/admin/remove-user/${id}`);
       setUsers(users.filter((user) => user._id !== id));
     } catch (error) {
       console.error("Error removing user", error);
