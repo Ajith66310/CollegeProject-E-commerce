@@ -15,7 +15,7 @@ const Verify = () => {
       if (!token) {
         return null
       }
-      const response = await axios.post(`${import.meta.env.backendUrl}/api/order/verifyRazorpay`,{success,orderId},{headers:{token}})
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/order/verifyRazorpay`,{success,orderId},{headers:{token}})
       if(response.data.success){
         setCartItems({})
         navigate('/orders')

@@ -20,7 +20,7 @@ const Login = () => {
     event.preventDefault();
     try {
       if (currentState === "Sign Up") {
-        const response = await axios.post(`${import.meta.env.backendUrl}/api/user/register`, {
+        const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/user/register`, {
           name,
           email,
           password,
@@ -34,7 +34,7 @@ const Login = () => {
           toast.error(response.data.message);
         }
       } else {
-        const response = await axios.post(`${import.meta.env.backendUrl}/api/user/login`, {
+        const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/user/login`, {
           email,
           password,
         });
@@ -64,7 +64,7 @@ const Login = () => {
     }
 
     try {
-      const response = await axios.post(`${import.meta.env.backendUrl}/api/user/forgot-password`, {
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/user/forgot-password`, {
         email,
         newPassword,
       });

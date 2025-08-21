@@ -60,7 +60,7 @@ const ShopContextProvider = (props) => {
   
     if (token) {
       try {
-        await axios.post(`${import.meta.env.backendUrl}/api/cart/add`, { itemId, quantity, productQuantity }, { headers: { token } });
+        await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/cart/add`, { itemId, quantity, productQuantity }, { headers: { token } });
       } catch (error) {
         toast.error(error.message);
       }
@@ -104,7 +104,7 @@ const ShopContextProvider = (props) => {
   
     if (token) {
       try {
-        await axios.post(`${import.meta.env.backendUrl}/api/cart/update`, { itemId, quantity, productQuantity }, { headers: { token } });
+        await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/cart/update`, { itemId, quantity, productQuantity }, { headers: { token } });
       } catch (error) {
         toast.error(error.message);
       }
@@ -131,7 +131,7 @@ const ShopContextProvider = (props) => {
 
   const getProductsData = async () => {
     try {
-      const response = await axios.get(`${import.meta.env.backendUrl}/api/product/list`)
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/product/list`)
       if (response.data.success) {
         setProducts(response.data.products)
       } else {
@@ -144,7 +144,7 @@ const ShopContextProvider = (props) => {
   }
   const getUserCart = async (token) => {
     try {
-      const response = await axios.post(`${import.meta.env.backendUrl}/api/cart/get` , {}, { headers: { token } })
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/cart/get`, {}, { headers: { token } })
       if (response.data.success) {
         setCartItems(response.data.cartData)
       }
