@@ -23,12 +23,20 @@ const allowedOrigins = [
   "https://lakshmi-project-admin.vercel.app"     // production admin
 ];
 
+
 app.use(cors({
-  origin: allowedOrigins,
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // include OPTIONS
-  allowedHeaders: ["Content-Type", "Authorization", "token"], // ✅ add "token"
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization", "token", "Accept", "X-Requested-With"],
   credentials: true
 }));
+
 
 app.options("*", cors());
 
@@ -49,8 +57,7 @@ app.get("/", (req, res) => {
 });
 
 // ✅ Export for Vercel (serverless)
-const handler = serverless(app);
-export { handler };
+export default serverless(app);
 
 // ✅ Local dev only
 if (!process.env.VERCEL) {
