@@ -15,11 +15,12 @@ const app = express();
 connectDB();
 connectCloudinary();
 
-app.use(express.json());
-
+// ✅ Put CORS at the very top
 const allowedOrigins = [
-  "http://localhost:5173", // frontend
-  "http://localhost:5174", // admin
+  "http://localhost:5173",  // local frontend
+  "http://localhost:5174",  // local admin
+  "https://lakshmi-project-frontend.vercel.app", // production frontend
+  "https://lakshmi-project-admin.vercel.app"     // production admin
 ];
 
 app.use(cors({
@@ -34,7 +35,10 @@ app.use(cors({
   credentials: true
 }));
 
+// ✅ Body parser after CORS
+app.use(express.json());
 
+// ✅ Routes
 app.use("/api/user", userRouter);
 app.use("/api/product", productRouter);
 app.use("/api/cart", cartRouter);
@@ -46,10 +50,10 @@ app.get("/", (req, res) => {
   res.send("API Working ✅");
 });
 
-// ✅ Export for Vercel (always)
+// ✅ Export for Vercel (serverless)
 export default serverless(app);
 
-// ✅ Run locally only if not on Vercel
+// ✅ Local dev only
 if (!process.env.VERCEL) {
   const port = process.env.PORT || 8080;
   app.listen(port, () => console.log(`Server started on port: ${port}`));
