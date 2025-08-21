@@ -33,12 +33,11 @@ app.use(cors({
     }
   },
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: "*",   // ✅ allow all headers
+  allowedHeaders: ["Content-Type", "Authorization", "Accept", "X-Requested-With"],
   credentials: true
 }));
 
-
-
+// ✅ important for preflight
 app.options("*", cors());
 
 
