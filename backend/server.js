@@ -30,7 +30,7 @@ app.get("/", (req, res) => {
 });
 
 // ✅ Export for Vercel (always)
-export const handler = serverless(app);
+export default serverless(app);
 
 // ✅ Run locally only if not on Vercel
 if (!process.env.VERCEL) {
