@@ -49,7 +49,8 @@ app.get("/", (req, res) => {
 });
 
 // ✅ Export for Vercel (serverless)
-export default serverless(app);
+const handler = serverless(app);
+export { handler };
 
 // ✅ Local dev only
 if (!process.env.VERCEL) {
