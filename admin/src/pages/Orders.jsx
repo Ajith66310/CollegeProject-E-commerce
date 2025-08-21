@@ -11,7 +11,7 @@ const Orders = () => {
   const fetchAllOrders = async () => {
 
     try {
-      const response = await axios.post(`${/api/order/list}`, {})
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/order/list`, {})
       if (response.data) {
         setOrders(response.data.orders.reverse())
       } else {
