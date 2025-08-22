@@ -9,13 +9,14 @@ import cartRouter from "./routes/cartRoute.js";
 import orderRouter from "./routes/orderRoute.js";
 import analyticsRoutes from "./routes/analytics.js";
 import adminRoutes from "./routes/adminRoutes.js";
-import serverless from "serverless-http";
 
 const app = express();
+
+// ✅ Connect DB + Cloudinary
 connectDB();
 connectCloudinary();
 
-
+// ✅ Allowed origins for local + production
 const allowedOrigins = [
   "http://localhost:5173",  // local frontend
   "http://localhost:5174",  // local admin
@@ -23,9 +24,8 @@ const allowedOrigins = [
   "https://lakshmi-project-admin.vercel.app"     // production admin
 ];
 
-
 app.use(cors({
-  origin: function (origin, callback) {
+  origin: (origin, callback) => {
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
@@ -33,15 +33,14 @@ app.use(cors({
     }
   },
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization", "Accept", "X-Requested-With"],
+  allowedHeaders: ["Content-Type", "Authorization", "Accept", "X-Requested-With", "token"],
   credentials: true
 }));
 
-// ✅ important for preflight
+// ✅ Handle preflight
 app.options("*", cors());
 
-
-// ✅ Body parser after CORS
+// ✅ Body parser
 app.use(express.json());
 
 // ✅ Routes
@@ -52,15 +51,14 @@ app.use("/api/order", orderRouter);
 app.use("/api/analytics", analyticsRoutes);
 app.use("/api/admin", adminRoutes);
 
+// ✅ Root route
 app.get("/", (req, res) => {
   res.send("API Working ✅");
 });
 
-// ✅ Export for Vercel (serverless)
-export default serverless(app);
+// ✅ Start server locally
+// const port = process.env.PORT || 4000;
+// app.listen(port, () => console.log(`🚀 Server started on port: ${port}`));
 
-// ✅ Local dev only
-if (!process.env.VERCEL) {
-  const port = process.env.PORT || 8080;
-  app.listen(port, () => console.log(`Server started on port: ${port}`));
-}
+// for vercel
+export default serverless(app);

@@ -6,7 +6,7 @@ const AdminReviews = ({token}) => {
 
   const fetchProductsWithReviews = async () => {
     try {
-      const res = await axios.get("http://localhost:4000/api/product/list");
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/product/list`);
       const products = res.data.products || res.data;
       setProducts(products.filter(product => product.reviews && product.reviews.length > 0));
     } catch (error) {
@@ -18,7 +18,7 @@ const AdminReviews = ({token}) => {
     
     try {
     
-      await axios.post(`http://localhost:4000/api/product/${productId}/review/remove`, {
+      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/product/${productId}/review/remove`, {
         productId,
         reviewId
       }, {
