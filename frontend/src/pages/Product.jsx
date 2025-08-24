@@ -38,7 +38,7 @@ const Product = () => {
     if (!reviewText.trim()) return toast("Review cannot be empty");
 
     try {
-      const res = await fetch(`${VITE_BACKEND_URL}/api/product/${productData._id}/review/add`, {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/product/${productData._id}/review/add`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
