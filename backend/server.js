@@ -21,9 +21,6 @@ const allowedOrigins = [
   "https://lakshmi-project-frontend.vercel.app", // production frontend
   "https://lakshmi-project-admin.vercel.app",     // production admin
   "https://lakshmi-project-backend.vercel.app",     // production admin
-  "http://localhost:5173",                       // local frontend (Vite default)
-  "http://localhost:3000",                       // local React/CRA frontend
-  "http://localhost:5174"                        // local admin (if running separately)
 ];
 
 app.use(cors({
