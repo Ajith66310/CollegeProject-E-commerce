@@ -32,7 +32,7 @@ app.use(cors({
     }
   },
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization", "Accept", "X-Requested-With", "token"],
+  allowedHeaders: ["Content-Type", "Authorization", "Accept", "X-Requested-With", "token","auth-token"],
   credentials: true
 }));
 
