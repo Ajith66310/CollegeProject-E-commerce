@@ -19,7 +19,8 @@ connectCloudinary();
 // ✅ Allowed origins for local + production
 const allowedOrigins = [
   "https://lakshmi-project-frontend.vercel.app", // production frontend
-  "https://lakshmi-project-admin.vercel.app"     // production admin
+  "https://lakshmi-project-admin.vercel.app",     // production admin
+  "https://lakshmi-project-backend.vercel.app"     // production admin
 ];
 
 app.use(cors({
