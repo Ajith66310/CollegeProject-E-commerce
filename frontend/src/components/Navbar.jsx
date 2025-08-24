@@ -84,9 +84,8 @@ const Navbar = () => {
           {/* On desktop, also show on hover; on mobile, show when profileOpen === true */}
           {token && (
             <div
-              className={`absolute right-0 pt-4 z-50 ${
-                profileOpen ? 'block' : 'hidden'
-              } sm:group-hover:block`}
+              className={`absolute right-0 pt-4 z-50 ${profileOpen ? 'block' : 'hidden'
+                } sm:group-hover:block`}
             >
               <div className="flex flex-col gap-2 w-36 py-3 px-5 bg-slate-100 text-gray-500 rounded shadow">
                 {/* <button
@@ -132,34 +131,51 @@ const Navbar = () => {
         />
       </div>
 
-      {/* Sidebar Menu for small screen */}
+      {/* Sidebar Overlay for small screen */}
       <div
-        className={`absolute top-0 right-0 bottom-0 overflow-hidden bg-white transition-all ${
-          visible ? 'w-full' : 'w-0'
-        }`}
+        className={`fixed inset-0 z-50 bg-black/90 transition-all ${visible ? 'block' : 'hidden'
+          }`}
       >
-        <div className="flex flex-col text-gray-600">
+        {/* Sidebar content */}
+        <div className="absolute top-0 right-0 w-3/4 max-w-xs h-full bg-white shadow-lg">
           <div
             onClick={() => setVisible(false)}
-            className="flex items-center gap-4 p-3 cursor-pointer"
+            className="flex items-center gap-4 p-3 cursor-pointer border-b"
           >
             <img className="h-4 rotate-180" src={assets.dropdown_icon} alt="Back" />
             <p>Back</p>
           </div>
-          <NavLink onClick={() => setVisible(false)} className="py-2 pl-6 border" to="/">
+          <NavLink
+            onClick={() => setVisible(false)}
+            className="block py-3 px-6 border-b text-gray-700"
+            to="/"
+          >
             HOME
           </NavLink>
-          <NavLink onClick={() => setVisible(false)} className="py-2 pl-6 border" to="/shop">
+          <NavLink
+            onClick={() => setVisible(false)}
+            className="block py-3 px-6 border-b text-gray-700"
+            to="/shop"
+          >
             SHOP
           </NavLink>
-          <NavLink onClick={() => setVisible(false)} className="py-2 pl-6 border" to="/about">
+          <NavLink
+            onClick={() => setVisible(false)}
+            className="block py-3 px-6 border-b text-gray-700"
+            to="/about"
+          >
             ABOUT
           </NavLink>
-          <NavLink onClick={() => setVisible(false)} className="py-2 pl-6 border" to="/contact">
+          <NavLink
+            onClick={() => setVisible(false)}
+            className="block py-3 px-6 border-b text-gray-700"
+            to="/contact"
+          >
             CONTACT
           </NavLink>
         </div>
       </div>
+
     </div>
   );
 };
