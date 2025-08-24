@@ -30,7 +30,7 @@ const Add = ({ token }) => {
       formData.append("quantity", JSON.stringify(quantity))
       formData.append("expiryDate", expiryDate)
       formData.append("stock", stock);
-      
+
       image1 && formData.append("image1", image1)
       image2 && formData.append("image2", image2)
       image3 && formData.append("image3", image3)
@@ -110,35 +110,37 @@ const Add = ({ token }) => {
           <input onChange={(e) => setPrice(e.target.value)} value={price} className='w-full px-3 py-2 sm:w-[120px]' type="number" placeholder='25' />
         </div>
       </div>
+
       <div>
-        <p className='mb-2' >Product Sizes</p>
-        <div className='flex gap-3'>
+        <p className='mb-2'>Product Sizes</p>
+        <div className='flex flex-wrap gap-3'>
           <div onClick={() => setQuantity(prev => prev.includes("73g") ? prev.filter(item => item !== "73g") : [...prev, "73g"])}>
-            <p className={`${quantity.includes("73g") ? "bg-pink-200" : "bg-slate-200"} px-3 py-1 cursor-pointer`}>73g</p>
+            <p className={`${quantity.includes("73g") ? "bg-pink-200" : "bg-slate-200"} px-3 py-1 cursor-pointer rounded-md`}>73g</p>
           </div>
           <div onClick={() => setQuantity(prev => prev.includes("250g") ? prev.filter(item => item !== "250g") : [...prev, "250g"])}>
-            <p className={`${quantity.includes("250g") ? "bg-pink-200" : "bg-slate-200"} px-3 py-1 cursor-pointer`}>250g</p>
+            <p className={`${quantity.includes("250g") ? "bg-pink-200" : "bg-slate-200"} px-3 py-1 cursor-pointer rounded-md`}>250g</p>
           </div>
           <div onClick={() => setQuantity(prev => prev.includes("500g") ? prev.filter(item => item !== "500g") : [...prev, "500g"])}>
-            <p className={`${quantity.includes("500g") ? "bg-pink-200" : "bg-slate-200"} px-3 py-1 cursor-pointer`}>500g</p>
+            <p className={`${quantity.includes("500g") ? "bg-pink-200" : "bg-slate-200"} px-3 py-1 cursor-pointer rounded-md`}>500g</p>
           </div>
           <div onClick={() => setQuantity(prev => prev.includes("1kg") ? prev.filter(item => item !== "1kg") : [...prev, "1kg"])}>
-            <p className={`${quantity.includes("1kg") ? "bg-pink-200" : "bg-slate-200"} px-3 py-1 cursor-pointer`}>1kg</p>
+            <p className={`${quantity.includes("1kg") ? "bg-pink-200" : "bg-slate-200"} px-3 py-1 cursor-pointer rounded-md`}>1kg</p>
           </div>
           <div onClick={() => setQuantity(prev => prev.includes("250ml") ? prev.filter(item => item !== "250ml") : [...prev, "250ml"])}>
-            <p className={`${quantity.includes("250ml") ? "bg-pink-200" : "bg-slate-200"} px-3 py-1 cursor-pointer`}>250ml</p>
+            <p className={`${quantity.includes("250ml") ? "bg-pink-200" : "bg-slate-200"} px-3 py-1 cursor-pointer rounded-md`}>250ml</p>
           </div>
           <div onClick={() => setQuantity(prev => prev.includes("330ml") ? prev.filter(item => item !== "330ml") : [...prev, "330ml"])}>
-            <p className={`${quantity.includes("330ml") ? "bg-pink-200" : "bg-slate-200"} px-3 py-1 cursor-pointer`}>330ml</p>
+            <p className={`${quantity.includes("330ml") ? "bg-pink-200" : "bg-slate-200"} px-3 py-1 cursor-pointer rounded-md`}>330ml</p>
           </div>
           <div onClick={() => setQuantity(prev => prev.includes("500ml") ? prev.filter(item => item !== "500ml") : [...prev, "500ml"])}>
-            <p className={`${quantity.includes("500ml") ? "bg-pink-200" : "bg-slate-200"} px-3 py-1 cursor-pointer`}>500ml</p>
+            <p className={`${quantity.includes("500ml") ? "bg-pink-200" : "bg-slate-200"} px-3 py-1 cursor-pointer rounded-md`}>500ml</p>
           </div>
           <div onClick={() => setQuantity(prev => prev.includes("1pack") ? prev.filter(item => item !== "1pack") : [...prev, "1pack"])}>
-            <p className={`${quantity.includes("1pack") ? "bg-pink-200" : "bg-slate-200"} px-3 py-1 cursor-pointer`}>1pack</p>
+            <p className={`${quantity.includes("1pack") ? "bg-pink-200" : "bg-slate-200"} px-3 py-1 cursor-pointer rounded-md`}>1pack</p>
           </div>
         </div>
       </div>
+
       {/* New Stock Input Field */}
       <div>
         <p className='mb-2'>Product Stock</p>
