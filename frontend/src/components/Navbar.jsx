@@ -89,12 +89,12 @@ const Navbar = () => {
               } sm:group-hover:block`}
             >
               <div className="flex flex-col gap-2 w-36 py-3 px-5 bg-slate-100 text-gray-500 rounded shadow">
-                <button
+                {/* <button
                   onClick={() => setProfileOpen(false)}
                   className="text-left cursor-pointer hover:text-black"
                 >
                   My Profile
-                </button>
+                </button> */}
                 <button
                   onClick={() => {
                     navigate('/orders');
