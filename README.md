@@ -80,9 +80,23 @@ COLLEGEPROJECT-E-COMMERCE/
 
 </pre>
 
-**Run the Application**
+### Installation & Setup
+
+**Clone the Repository**
+
+<pre>
+git clone https://github.com/Ajith66310/CollegeProject-E-commerce.git
+cd CollegeProject-E-commerce
+</pre>
 
 **Frontend Setup**
+
+Create a **.env** file inside **frontend/**:
+
+<pre>
+VITE_BACKEND_URL=YOUR_BACKEND_URL
+VITE_RAZORPAY_KEY_ID=YOUR_RAZORPAY_KEY_ID
+</pre>
 
 <pre>
 cd frontend 
@@ -91,12 +105,6 @@ npm run dev
 </pre>
 
 **Backend Setup**
-
-<pre>
-cd backend 
-npm install
-npm run server
-</pre>
 
 Create a **.env** file inside **backend/**:
 
@@ -114,18 +122,24 @@ EMAIL_USER=YOUR_APP_EMAIL
 EMAIL_PASS=YOUR_APP_EMAIL_PASSWORD
 </pre>
 
-**Admin Setup**
-
 <pre>
-cd admin 
+cd backend 
 npm install
-npm run dev
+npm run server
 </pre>
+
+**Admin Setup**
 
 Create a **.env** file inside **admin/**:
 
 <pre>
 VITE_BACKEND_URL=YOUR_BACKEND_URL
+</pre>
+
+<pre>
+cd admin 
+npm install
+npm run dev
 </pre>
 
 🌐 **Live Demo**  
