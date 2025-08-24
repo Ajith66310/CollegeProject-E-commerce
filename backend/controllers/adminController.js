@@ -1,7 +1,5 @@
 import userModel from "../models/userModel.js";
-import Order from "../models/orderModel.js"; 
-import Product from "../models/productModel.js";
-import productModel from "../models/productModel.js";
+
 
 
 export const removeUser = async (req, res) => {

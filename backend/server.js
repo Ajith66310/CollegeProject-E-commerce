@@ -18,8 +18,6 @@ connectCloudinary();
 
 // ✅ Allowed origins for local + production
 const allowedOrigins = [
-  "http://localhost:5173",  // local frontend
-  "http://localhost:5174",  // local admin
   "https://lakshmi-project-frontend.vercel.app", // production frontend
   "https://lakshmi-project-admin.vercel.app"     // production admin
 ];
