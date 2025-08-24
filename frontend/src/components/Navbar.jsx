@@ -1,10 +1,12 @@
-import React, { useContext, useState } from 'react'
-import { assets } from '../assets/assets'
-import { Link, NavLink } from 'react-router-dom'
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { assets } from '../assets/assets';
+import { Link, NavLink } from 'react-router-dom';
 import { ShopContext } from '../context/ShopContext';
 
 const Navbar = () => {
   const [visible, setVisible] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   const { setShowSearch, getCartCount, navigate, token, setToken, setCartItems } = useContext(ShopContext);
 
@@ -13,14 +15,28 @@ const Navbar = () => {
     localStorage.removeItem('token');
     setToken('');
     setCartItems({});
+    setProfileOpen(false);
   };
 
+  // close dropdown on outside click
+  useEffect(() => {
+    const onOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setProfileOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', onOutside);
+    document.addEventListener('touchstart', onOutside);
+    return () => {
+      document.removeEventListener('mousedown', onOutside);
+      document.removeEventListener('touchstart', onOutside);
+    };
+  }, []);
+
   return (
-    <div className="flex items-center justify-between py-5 font-medium">
+    <div className="flex items-center justify-between py-5 font-medium relative">
       {/* Logo */}
-      <Link to="/">
-        <img src={assets.logo} className="w-36" alt="Logo" />
-      </Link>
+      <Link to="/"><img src={assets.logo} className="w-36" alt="Logo" /></Link>
 
       {/* Nav links (desktop) */}
       <ul className="hidden sm:flex gap-5 text-sm text-gray-700">
@@ -28,17 +44,14 @@ const Navbar = () => {
           <p>HOME</p>
           <hr className="w-2/4 border-none h-[1.5px] bg-gray-700 hidden" />
         </NavLink>
-
         <NavLink to="/shop" className="flex flex-col items-center gap-1">
           <p>SHOP</p>
           <hr className="w-2/4 border-none h-[1.5px] bg-gray-700 hidden" />
         </NavLink>
-
         <NavLink to="/about" className="flex flex-col items-center gap-1">
           <p>ABOUT</p>
           <hr className="w-2/4 border-none h-[1.5px] bg-gray-700 hidden" />
         </NavLink>
-
         <NavLink to="/contact" className="flex flex-col items-center gap-1">
           <p>CONTACT</p>
           <hr className="w-2/4 border-none h-[1.5px] bg-gray-700 hidden" />
@@ -47,7 +60,7 @@ const Navbar = () => {
 
       {/* Right section */}
       <div className="flex items-center gap-6">
-        {/* Search icon */}
+        {/* Search */}
         <img
           onClick={() => setShowSearch(true)}
           src={assets.search_icon}
@@ -56,29 +69,47 @@ const Navbar = () => {
         />
 
         {/* Profile + Dropdown */}
-        <div className="group relative">
+        <div className="relative" ref={dropdownRef}>
           <img
-            onClick={() => (token ? null : navigate('/login'))}
+            onClick={() => {
+              if (!token) return navigate('/login');
+              setProfileOpen((v) => !v);
+            }}
             src={assets.profile_icon}
             className="w-5 cursor-pointer"
             alt="Profile"
+            aria-haspopup="menu"
+            aria-expanded={profileOpen}
           />
+          {/* On desktop, also show on hover; on mobile, show when profileOpen === true */}
           {token && (
-            <div className="group-hover:block hidden absolute dropdown-menu right-0 pt-4">
-              <div className="flex flex-col gap-2 w-36 py-3 px-5 bg-slate-100 text-gray-500 rounded">
-                <p className="cursor-pointer hover:text-black">My Profile</p>
-                <p
-                  onClick={() => navigate('/orders')}
-                  className="cursor-pointer hover:text-black"
+            <div
+              className={`absolute right-0 pt-4 z-50 ${
+                profileOpen ? 'block' : 'hidden'
+              } sm:group-hover:block`}
+            >
+              <div className="flex flex-col gap-2 w-36 py-3 px-5 bg-slate-100 text-gray-500 rounded shadow">
+                <button
+                  onClick={() => setProfileOpen(false)}
+                  className="text-left cursor-pointer hover:text-black"
+                >
+                  My Profile
+                </button>
+                <button
+                  onClick={() => {
+                    navigate('/orders');
+                    setProfileOpen(false);
+                  }}
+                  className="text-left cursor-pointer hover:text-black"
                 >
                   Orders
-                </p>
-                <p
+                </button>
+                <button
                   onClick={logout}
-                  className="cursor-pointer hover:text-black"
+                  className="text-left cursor-pointer hover:text-black"
                 >
                   Logout
-                </p>
+                </button>
               </div>
             </div>
           )}
