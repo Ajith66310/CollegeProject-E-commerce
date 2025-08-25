@@ -133,11 +133,14 @@ const Navbar = () => {
 
       {/* Sidebar Overlay for small screen */}
       <div
-        className={`fixed inset-0 z-50 bg-black/90 transition-all ${visible ? 'block' : 'hidden'
+        className={`fixed inset-0 z-50 bg-black/90 transition-opacity duration-300 ease-in-out ${visible ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
           }`}
       >
         {/* Sidebar content */}
-        <div className="absolute top-0 right-0 w-3/4 max-w-xs h-full bg-white shadow-lg">
+        <div
+          className={`absolute top-0 right-0 w-3/4 max-w-xs h-full bg-white shadow-lg transform transition-transform duration-300 ease-in-out ${visible ? 'translate-x-0' : 'translate-x-full'
+            }`}
+        >
           <div
             onClick={() => setVisible(false)}
             className="flex items-center gap-4 p-3 cursor-pointer border-b"
@@ -175,6 +178,7 @@ const Navbar = () => {
           </NavLink>
         </div>
       </div>
+
 
     </div>
   );
