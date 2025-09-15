@@ -4,7 +4,7 @@ import { assets } from "../assets/assets";
 import Title from "../components/Title";
 import ProductItem from "../components/ProductItem";
 
-const Home = () => {
+const Shop = () => {
   const { products, search, showSearch } = useContext(ShopContext);
   const [showFilter, setShowFilter] = useState(false);
   const [filterProducts, setFilterProducts] = useState([]);
@@ -247,4 +247,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Shop;
