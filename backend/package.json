@@ -22,13 +22,13 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.12.1",
     "multer": "^2.0.2",
-    "nodemailer": "^6.10.0",
+    "nodemailer": "^7.0.9",
     "nodemon": "^3.1.9",
     "razorpay": "^2.9.6",
     "react-router": "^7.7.1",
     "serverless-http": "^3.2.0",
     "stripe": "^17.7.0",
-    "validator": "^13.12.0",
+    "validator": "^13.15.15",
     "vite": "^7.0.6"
   }
 }
